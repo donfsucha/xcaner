@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>XCAN Player 모바일 가이드</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* [프리미엄 모바일 컬러 팔레트] */
+        :root {
+            --navy: #14233c;
+            --gold: #cfa15e;
+            --bg-gray: #f4f6f8;
+            --white: #ffffff;
+            --text-main: #2a2a2a;
+            --text-sub: #5a5a5a;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #333; /* PC 배경 */
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        /* [모바일 컨테이너] */
+        .mobile-container {
+            width: 100%;
+            max-width: 480px; /* 최대 스마트폰 너비 */
+            background-color: var(--bg-gray);
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            overflow-x: hidden;
+        }
+
+        /* 1. 헤더 영역 */
+        .header {
+            position: relative;
+            height: 220px;
+            background-color: var(--navy);
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .header-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.9;
+        }
+        
+        .header-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 25px 20px;
+            background: linear-gradient(to top, rgba(20,35,60,0.95), transparent);
+            color: white;
+        }
+        
+        .brand-pill {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.95);
+            padding: 6px 12px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--navy);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .brand-pill img { width: 20px; height: 20px; border-radius: 4px; }
+
+        .header-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .header-desc {
+            font-size: 14px;
+            color: var(--gold);
+            font-weight: 500;
+        }
+
+        /* 2. 본문 컨텐츠 */
+        .content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* 카드 디자인 */
+        .card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+        }
+
+        .card-head {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .step-circle {
+            background: var(--navy);
+            color: var(--gold);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 800;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+        }
+        .card-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        /* 텍스트 & 리스트 */
+        .check-list { list-style: none; padding: 0; margin: 0; }
+        .check-list li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+        .check-list li::before {
+            content: '✔';
+            position: absolute;
+            left: 0;
+            top: 1px;
+            color: var(--gold);
+            font-weight: bold;
+        }
+        .highlight { color: #d32f2f; font-weight: 600; font-size: 13px; margin-top: 5px; display: block; }
+
+        /* 팁 박스 */
+        .tip-box {
+            background: #fffcf5;
+            border: 1px solid rgba(207, 161, 94, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 13px;
+            color: #5d4037;
+            margin-bottom: 15px;
+            display: flex;
+            gap: 8px;
+            align-items: start;
+        }
+        .tip-icon { color: var(--gold); font-size: 16px; margin-top: 2px; }
+
+        /* 2번 섹션 아이콘 레이아웃 */
+        .icon-layout {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            align-items: stretch; /* 높이 맞춤 */
+        }
+        .icon-bar {
+            width: 50px; /* 아이콘 바 너비 */
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* 위아래 꽉 차게 */
+        }
+        .icon-bar img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            /* 아이콘 이미지 자체에 여백이 있다면 여기서 조정 가능 */
+        }
+        
+        .func-list-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* 텍스트도 위아래 균등 분포 */
+            padding-top: 5px; /* 미세 조정 */
+            padding-bottom: 5px;
+        }
+        
+        .func-list { list-style: none; padding: 0; margin: 0; }
+        .func-list li {
+            position: relative;
+            padding-left: 12px;
+            margin-bottom: 12px; /* 아이콘 간격과 맞추기 위해 여백 늘림 */
+            font-size: 13px;
+            color: var(--text-sub);
+            line-height: 1.3;
+        }
+        .func-list li:last-child { margin-bottom: 0; }
+        .func-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--gold);
+            font-weight: bold;
+        }
+        .func-list strong { color: var(--navy); font-weight: 700; display: block; margin-bottom: 2px;}
+
+        .speed-tags { display: inline-flex; flex-wrap: wrap; gap: 3px; margin-top: 2px; }
+        .tag {
+            font-size: 10px;
+            padding: 1px 5px;
+            background: #edf2f7;
+            border-radius: 4px;
+            color: var(--navy);
+            font-weight: 600;
+        }
+        .tag.active { background: var(--navy); color: var(--gold); }
+
+        .full-img {
+            width: 100%;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        /* 3번 섹션 시간 설정 가이드 */
+        .time-guide-container {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px solid #eee;
+        }
+        .time-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        /* 이미지 나란히 배치 */
+        .time-img-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+        .time-img-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .time-img-box img {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            object-fit: contain;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .time-caption {
+            font-size: 11px;
+            color: var(--navy);
+            font-weight: 700;
+            margin-top: 5px;
+        }
+
+        /* 하단 설명 */
+        .time-desc {
+            font-size: 12px;
+            color: #444;
+            line-height: 1.5;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+        .time-desc p { margin: 0 0 5px 0; padding-left: 10px; position: relative; }
+        .time-desc p::before { content: "-"; position: absolute; left: 0; font-weight: bold; color: var(--navy); }
+        .time-desc strong { color: var(--navy); }
+
+        /* AI 플로팅 버튼 */
+        .fab-ai {
+            position: fixed;
+            bottom: 25px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: var(--navy);
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(20, 35, 60, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            border: 2px solid var(--gold);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .fab-ai:active { transform: scale(0.95); }
+        .fab-ai i { color: var(--gold); font-size: 24px; }
+
+        /* AI 채팅 모달 */
+        .chat-modal {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%) translateY(100%);
+            width: 100%;
+            max-width: 480px;
+            height: 80vh;
+            background: white;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            box-shadow: 0 -5px 30px rgba(0,0,0,0.2);
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease-out;
+        }
+        .chat-modal.active { transform: translateX(-50%) translateY(0); }
+        
+        .modal-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--navy);
+            color: white;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+        .modal-title { font-weight: 700; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+        .close-btn { font-size: 20px; cursor: pointer; color: var(--gold); }
+
+        .chat-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #fcfcfc;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .bubble {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.5;
+            word-break: keep-all;
+        }
+        .bubble.bot {
+            background: white;
+            border: 1px solid #eee;
+            border-top-left-radius: 4px;
+            align-self: flex-start;
+            color: #333;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+        }
+        .bubble.user {
+            background: var(--navy);
+            color: white;
+            border-top-right-radius: 4px;
+            align-self: flex-end;
+        }
+
+        .input-area {
+            padding: 15px;
+            border-top: 1px solid #eee;
+            background: white;
+            display: flex;
+            gap: 10px;
+        }
+        .chat-input {
+            flex: 1;
+            background: #f5f5f5;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 15px;
+            font-size: 14px;
+            outline: none;
+        }
+        .send-icon {
+            width: 45px;
+            height: 45px;
+            background: var(--navy);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        /* 배경 흐림 효과 */
+        .overlay-dim {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            display: none;
+        }
+        .overlay-dim.active { display: block; }
+
+        /* API Key 설정 (숨김) */
+        .key-panel { padding: 20px; text-align: center; background: #fffcf5; border-bottom: 1px solid #eee; display: none; }
+        .key-input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; margin: 10px 0; }
+        .key-save { width: 100%; padding: 10px; background: var(--navy); color: white; border: none; border-radius: 8px; }
+
+    </style>
+</head>
+<body>
+
+<div class="mobile-container">
+    
+    <!-- 1. 헤더 -->
+    <header class="header">
+        <img src="표지.jpg" onerror="this.onerror=null; this.src='image_8f4ac6.jpg';" alt="Cover" class="header-img">
+        <div class="header-content">
+            <div class="header-title">XCAN PLAYER</div>
+            <div class="header-desc">Premium Smart Cradle Guide</div>
+        </div>
+        <div class="brand-pill">
+            <img src="아이콘.jpg" onerror="this.onerror=null; this.src='unnamed.jpg';" alt="Logo">
+            <span>XCAN</span>
+        </div>
+    </header>
+
+    <div class="content">
+        
+        <!-- STEP 1 -->
+        <div class="card">
+            <div class="card-head">
+                <div class="step-circle">1</div>
+                <div class="card-title">설치 및 초기 설정</div>
+            </div>
+            <div class="tip-box">
+                <i class="fa-solid fa-triangle-exclamation tip-icon"></i>
+                <div><strong>필수 확인:</strong> NFC(기본모드) 켜기 및 화면 잠금 해제</div>
+            </div>
+            <ul class="check-list">
+                <li>제품 로고에 폰을 태그하세요.</li>
+                <li>연결된 페이지에서 <strong>[설치]</strong> 또는 <strong>[다운로드]</strong> 버튼을 꼭 눌러주세요.</li>
+                <li>앱 실행 후 <strong>'퐁당(Fondant)' 로그인</strong> (최초 1회)</li>
+                <span class="highlight">※ 별도 유료 구독 설정은 필요 없습니다.</span>
+            </ul>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="card">
+            <div class="card-head">
+                <div class="step-circle">2</div>
+                <div class="card-title">자동 실행 & 영상 제어</div>
+            </div>
+            
+            <!-- 상단: 아이콘 + 텍스트 (높이 맞춤) -->
+            <div class="icon-layout">
+                <!-- 아이콘 바 (설정아이콘.png) -->
+                <div class="icon-bar">
+                    <img src="설정아이콘.png" onerror="this.onerror=null; this.src='image_8f4a4d.png';" alt="Icons">
+                </div>
+                
+                <!-- 설명 리스트 -->
+                <div class="func-list-col">
+                    <ul class="func-list">
+                        <li>
+                            <strong>화면 회전</strong>
+                            터치 시 가로/세로 고정
+                        </li>
+                        <li>
+                            <strong>배속 조절 (순차 변경)</strong>
+                            <div class="speed-tags">
+                                <span class="tag active">1.0</span>
+                                <span class="tag">1.25</span>
+                                <span class="tag">1.5</span>
+                                <span class="tag">1.75</span>
+                                <span class="tag">2.0</span>
+                            </div>
+                        </li>
+                        <li>
+                            <strong>스케줄 설정</strong>
+                            시간/재생 목록 관리
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 하단: 폰 화면 (꽉 차게) -->
+            <img src="화면1.jfif" onerror="this.onerror=null; this.src='image_8f42b0.jpg';" class="full-img" alt="Screen">
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="card">
+            <div class="card-head">
+                <div class="step-circle">3</div>
+                <div class="card-title">나만의 스케줄 설정</div>
+            </div>
+            
+            <!-- 스케줄 목록 화면 -->
+            <div style="margin-bottom: 15px;">
+                <img src="스케줄관리.jfif" onerror="this.onerror=null; this.src='image_8f3f06.jpg';" class="full-img" style="margin-bottom:10px;" alt="Schedule List">
+                <ul class="check-list" style="font-size:13px; background:#f9f9f9; padding:10px; border-radius:8px;">
+                    <li><strong>[프리셋]</strong> 버튼으로 간편 입력</li>
+                    <li><strong>[시간 선택]</strong> 터치하여 수정</li>
+                    <li><strong>[+ 추가]</strong> 버튼 눌러 등록</li>
+                </ul>
+            </div>
+
+            <!-- 시간 설정 가이드 (나란히 배치) -->
+            <div class="time-guide-container">
+                <div class="time-title"><i class="fa-regular fa-clock"></i> 시간 설정 방법 (터치)</div>
+                
+                <div class="time-img-row">
+                    <div class="time-img-box">
+                        <img src="시간조정.jpg" onerror="this.onerror=null; this.src='시간조정.jpg';" alt="Hour">
+                        <div class="time-caption">1. 시(Hour) 선택</div>
+                    </div>
+                    <div class="time-img-box">
+                        <img src="분조정.jpg" onerror="this.onerror=null; this.src='분조정.jpg';" alt="Minute">
+                        <div class="time-caption">2. 분(Minute) 선택</div>
+                    </div>
+                </div>
+
+                <div class="time-desc">
+                    <p>다이얼을 돌리지 않고 <strong>숫자를 터치</strong>하세요.</p>
+                    <p><strong>시(Hour):</strong> 바깥쪽(오전 1~12), 안쪽(오후 13~00)</p>
+                    <p><strong>분(Minute):</strong> 시 선택 후, 원하는 분 숫자 터치</p>
+                </div>
+            </div>
+
+            <div class="highlight" style="text-align: center; margin-top:15px; background:#ffebee; padding:8px; border-radius:6px;">
+                설정 완료 후 하단 [저장] 버튼 필수 터치!
+            </div>
+        </div>
+
+        <!-- 하단 여백 -->
+        <div style="height: 80px;"></div>
+
+    </div>
+
+    <!-- AI Floating Button -->
+    <div class="fab-ai" onclick="openChat()">
+        <i class="fa-solid fa-robot"></i>
+    </div>
+
+    <!-- Dim Overlay -->
+    <div class="overlay-dim" id="overlay" onclick="closeChat()"></div>
+
+    <!-- Chat Modal -->
+    <div class="chat-modal" id="chatModal">
+        <div class="modal-header">
+            <div class="modal-title">
+                <i class="fa-solid fa-sparkles"></i> AI 도우미
+                <i class="fa-solid fa-gear" style="font-size:14px; opacity:0.7; margin-left:5px; cursor:pointer;" onclick="toggleKeyPanel()"></i>
+            </div>
+            <i class="fa-solid fa-xmark close-btn" onclick="closeChat()"></i>
+        </div>
+
+        <!-- API Key Panel -->
+        <div class="key-panel" id="keyPanel">
+            <p style="font-size:12px; margin-bottom:5px;">AI 사용을 위해 Gemini API Key가 필요합니다.</p>
+            <input type="password" id="apiKeyInput" class="key-input" placeholder="API Key 입력">
+            <button class="key-save" onclick="saveKey()">저장하기</button>
+            <a href="https://aistudio.google.com/app/apikey" target="_blank" style="font-size:11px; display:block; margin-top:8px; color:var(--navy);">키 발급받기 &rarr;</a>
+        </div>
+
+        <div class="chat-content" id="chatList">
+            <div class="bubble bot">
+                안녕하세요! 👋<br>
+                <strong>설치 방법</strong>이나 <strong>사용법</strong>이 궁금하신가요?<br>
+                힘든 일이 있다면 말씀해 주세요. 위로가 되는 말씀과 기도를 선물해 드릴게요. 🙏
+            </div>
+        </div>
+
+        <div class="input-area">
+            <input type="text" class="chat-input" id="userMsg" placeholder="질문을 입력하세요..." onkeypress="if(event.key==='Enter') sendMsg()">
+            <div class="send-icon" onclick="sendMsg()">
+                <i class="fa-solid fa-paper-plane"></i>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let apiKey = "";
+
+    window.onload = () => {
+        const saved = localStorage.getItem('xcan_gemini_key');
+        if(saved) apiKey = saved;
+    };
+
+    function openChat() {
+        document.getElementById('chatModal').classList.add('active');
+        document.getElementById('overlay').classList.add('active');
+        if(!apiKey) document.getElementById('keyPanel').style.display = 'block';
+    }
+
+    function closeChat() {
+        document.getElementById('chatModal').classList.remove('active');
+        document.getElementById('overlay').classList.remove('active');
+    }
+
+    function toggleKeyPanel() {
+        const panel = document.getElementById('keyPanel');
+        panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function saveKey() {
+        const input = document.getElementById('apiKeyInput').value.trim();
+        if(input) {
+            localStorage.setItem('xcan_gemini_key', input);
+            apiKey = input;
+            document.getElementById('keyPanel').style.display = 'none';
+            alert("API Key가 저장되었습니다.");
+        }
+    }
+
+    async function sendMsg() {
+        if(!apiKey) { alert("API Key를 먼저 설정해주세요."); toggleKeyPanel(); return; }
+        
+        const input = document.getElementById('userMsg');
+        const txt = input.value.trim();
+        if(!txt) return;
+
+        addBubble(txt, 'user');
+        input.value = '';
+        
+        const loadId = addBubble('답변 작성 중...', 'bot', true);
+
+        try {
+            const reply = await callGemini(txt);
+            document.getElementById(loadId).innerHTML = reply.replace(/\n/g, '<br>');
+        } catch(e) {
+            document.getElementById(loadId).innerText = "오류가 발생했습니다. 키를 확인해주세요.";
+        }
+    }
+
+    function addBubble(txt, type, isLoad=false) {
+        const div = document.createElement('div');
+        div.className = `bubble ${type}`;
+        div.innerHTML = isLoad ? '<i class="fa-solid fa-spinner fa-spin"></i>' : txt.replace(/\n/g, '<br>');
+        if(isLoad) div.id = 'load_' + Date.now();
+        const list = document.getElementById('chatList');
+        list.appendChild(div);
+        list.scrollTop = list.scrollHeight;
+        return div.id;
+    }
+
+    async function callGemini(prompt) {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+        const sysPrompt = `
+        당신은 '엑스캔 플레이어' AI 가이드입니다. 
+        [정보] 제품: XCAN 스마트 크래들 + 퐁당 앱. 기능: CGN 일일 통독 자동재생. 다운로드: https://works.do/5N0572P 
+        [사용법] 설치: NFC/잠금해제 -> 태그 -> 앱설치(자동X, 버튼클릭) -> 퐁당로그인(구독X). 제어: 배속순환, 회전고정. 스케줄: 프리셋/직접입력 -> 추가 -> 저장필수. 시간설정: 안쪽(오후)/바깥(오전) 터치. 
+        [태도] 친절, 신앙상담 시 성경구절/기도문 선물.
+        `;
+
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                contents: [{ parts: [{ text: prompt }] }],
+                systemInstruction: { parts: [{ text: sysPrompt }] }
+            })
+        });
+        const json = await res.json();
+        return json.candidates[0].content.parts[0].text;
+    }
+</script>
+
+</body>
+</html>
